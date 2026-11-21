@@ -14,3 +14,7 @@ FEIBOT is an articulated robotic arm project. Assembly is still in progress. The
 ## Mechanical design
 
 The CAD files include custom joint brackets and connectors, actuator models, and the base and electronics mounts. Engineering drawings and STEP models are available for selected components. [Browse the CAD files](ROBOT_CAD/).
+
+## Kinematics
+
+The [URDF model](kinematics/urdf/feibot.urdf) defines the arm's six revolute joints, their limits, and the tool frame. The [MATLAB scripts](kinematics/) provide an interactive joint viewer and estimate the tool's reachable workspace by sampling joint configurations. The workspace estimate is kinematic and does not account for collisions or payload.
