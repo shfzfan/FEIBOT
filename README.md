@@ -1,26 +1,37 @@
 # FEIBOT
 
-FEIBOT is a six-axis robotic arm I'm building to explore mechanical design, robot kinematics, and joint control. The project combines an Autodesk Inventor mechanical design, a URDF model, and MATLAB tools for visualizing joint motion and exploring the arm's workspace. Physical assembly is still in progress.
+FEIBOT is a six-axis robotic arm prototype built around carbon-fiber tube links, motorized joints, and custom machined-part designs. This repository contains the mechanical design, the robot's kinematic model, and MATLAB tools for visualizing joint motion and analyzing tool reach.
 
 <p align="center">
-  <img src="docs/images/feibot-assembly-isometric.png" width="48%" alt="Isometric CAD view showing FEIBOT's carbon-fiber links, joints, and base" />
-  <img src="docs/images/feibot-assembly-front.png" width="48%" alt="Front CAD view showing the FEIBOT arm and base" />
+  <img src="docs/images/feibot-assembly-isometric.png" width="48%" alt="Isometric CAD view of the FEIBOT robotic arm" />
+  <img src="docs/images/feibot-assembly-front.png" width="48%" alt="Front CAD view of the FEIBOT robotic arm" />
 </p>
 
-*Isometric and front views of the current CAD model.*
+*Current CAD design, shown in isometric and front views.*
 
-## Mechanical design
+## Hardware
 
-The arm uses carbon-fiber tube links, custom joint brackets, and a base with space for the Raspberry Pi 5 and supporting electronics. The upper arm spans about 500 mm from J2 to J3, and the main forearm span in the kinematic model is 405 mm. I evaluated parallel tubes for bending stiffness and explored placing the J4 actuator on the opposite side of the J3 axis to offset some of the forearm's gravitational torque.
+Parallel carbon-fiber tubes form the main arm links. Custom brackets connect the links to the joint actuators, and the base provides mounting space for the control electronics.
 
-A **1 kg payload** is a design target. The load and deflection estimates are based on modeled configurations. Payload capacity and sustained holding performance still need physical testing. [Browse the CAD files and selected engineering drawings](ROBOT_CAD/).
+| Design parameter | FEIBOT |
+| --- | --- |
+| Degrees of freedom | 6 revolute joints |
+| Upper-arm span | 500 mm (J2 to J3) |
+| Main forearm span | 405 mm (J4 to J5) |
+| Target payload | 1 kg |
+| Control architecture | Raspberry Pi 5 host with CAN communication to the joint actuators |
 
-## Kinematics and workspace
+## Robot model and analysis
 
-The URDF describes six revolute joints, their axes and travel limits, and the tool frame. The interactive MATLAB viewer shows how individual joint movements change the arm's configuration and tool pose. The workspace script samples 50,000 joint configurations and uses forward kinematics to estimate where the tool can reach.
+The URDF describes the joint axes, offsets, travel limits, and tool frame. The MATLAB viewer lets visitors explore joint configurations and inspect the tool pose. The workspace script uses forward kinematics over 50,000 sampled configurations to estimate the tool's positional reach within the modeled joint limits.
 
-The current workspace estimate covers position reachability under joint limits. Collision clearance, payload effects, and the range of tool orientations available at each point remain to be evaluated. [View the URDF](kinematics/urdf/feibot.urdf) · [Browse the MATLAB scripts](kinematics/).
+| Resource | Contents |
+| --- | --- |
+| [Mechanical CAD](ROBOT_CAD/) | Autodesk Inventor assembly, part files, drawings, and selected STEP models. |
+| [URDF](kinematics/urdf/feibot.urdf) | Six-axis kinematic model. |
+| [MATLAB joint viewer](kinematics/robot_viewer_ui.m) | Interactive joint controls and tool-pose visualization. |
+| [Workspace analysis](kinematics/feibot_workspace.m) | Sampled reachability point cloud and planar projections. |
 
-## Electronics and control
+## Prototype status
 
-The control design uses a Raspberry Pi 5 as the host. I've evaluated the Damiao USB-to-CAN FD adapter and a multi-channel USB-CAN interface using SocketCAN. On the bench, one DM-J4310 actuator returned position, velocity, and torque feedback. Coordinated six-axis motion is still to be demonstrated.
+Physical assembly is in progress. Coordinated six-axis motion and the 1 kg payload target are pending hardware validation.
